@@ -1665,4 +1665,49 @@ class GraphContext implements Context {
 		}
 		$this->addMultipleUsersToGroup($user, $userIds, $groupId, $table);
 	}
+
+	/**
+	 * @Given /^the administrator "([^"]*)" has added the following users to a group "([^"]*)" at once using the Graph API$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 * @throws Exception
+	 */
+	public function theAdministratorHasAddedTheFollowingUsersToAGroupAtOnceUsingTheGraphApi(string $user, string $group, TableNode $table) {
+		$userIds = [];
+		$groupId = $this->featureContext->getAttributeOfCreatedGroup($group, "id");
+		foreach ($table->getHash() as $row) {
+			$userIds[] = $this->featureContext->getAttributeOfCreatedUser($row['username'], "id");
+		}
+		$this->addMultipleUsersToGroup($user, $userIds, $groupId, $table);
+		$response = $this->featureContext->getResponse();
+		if ($response->getStatusCode() !== 204) {
+			$this->throwHttpException($response, "Could add users in group'$group'");
+		}
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+	}
+
+	/**
+	 * @When /^the administrator "([^"]*)" tries to add the following groups to a group "([^"]*)" at once using the Graph API$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws GuzzleException
+	 * @throws Exception
+	 */
+	public function theAdministratorAddsTheFollowingGroupsToAGroupAtOnceUsingTheGraphApi(string $user, string $group, TableNode $table) {
+		$userIds = [];
+		$groupId = $this->featureContext->getAttributeOfCreatedGroup($group, "id");
+		foreach ($table->getHash() as $row) {
+			$userIds[] = $this->featureContext->getAttributeOfCreatedGroup($group, "id");
+		}
+		$this->addMultipleUsersToGroup($user, $userIds, $groupId, $table);
+	}
 }

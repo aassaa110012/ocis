@@ -103,5 +103,8 @@ The expected failures in this file are from features in the owncloud/ocis repo.
 #### [Normal user can get expanded members information of a group](https://github.com/owncloud/ocis/issues/5604)
 - [apiGraph/getGroup.feature:100](https://github.com/owncloud/ocis/blob/master/tests/acceptance/features/apiGraph/getGroup.feature#L100)
 
+#### [Same users can be added in a group multiple time](https://github.com/owncloud/ocis/issues/5702)
+- [apiGraph/addUserToGroup.feature:208](https://github.com/owncloud/ocis/blob/master/tests/acceptance/features/apiGraph/addUserToGroup.feature#L208)
+
 Note: always have an empty line at the end of this file.
 The bash script that processes this file requires that the last line has a newline on the end.
