@@ -48,12 +48,14 @@ func DefaultConfig() *config.Config {
 				UserObjectClass:         "inetOrgPerson",
 				GroupObjectClass:        "groupOfNames",
 				BindDN:                  "uid=reva,ou=sysusers,o=libregraph-idm",
+				DisableUserMechanism:    "none",
 				IDP:                     "https://localhost:9200",
 				UserSchema: config.LDAPUserSchema{
 					ID:          "ownclouduuid",
 					Mail:        "mail",
 					DisplayName: "displayname",
 					Username:    "uid",
+					Enabled:     "ownCloudUserEnabled",
 				},
 				GroupSchema: config.LDAPGroupSchema{
 					ID:          "ownclouduuid",
