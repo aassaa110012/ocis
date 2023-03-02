@@ -1673,6 +1673,25 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * @Then the ocs JSON data of the response should match
+	 *
+	 * @param PyStringNode $schemaString
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function theOcsDataOfTheResponseShouldMatch(
+		PyStringNode $schemaString
+	): void {
+		$jsonResponse = $this->getJsonDecodedResponseBodyContent();
+		JsonAssertions::assertJsonDocumentMatchesSchema(
+			$jsonResponse->ocs->data,
+			$this->getJSONSchema($schemaString)
+		);
+	}
+
+	/**
 	 * @Then the JSON data of the response should match
 	 *
 	 * @param PyStringNode $schemaString
@@ -1686,7 +1705,7 @@ class FeatureContext extends BehatVariablesContext {
 	): void {
 		$jsonResponse = $this->getJsonDecodedResponseBodyContent();
 		JsonAssertions::assertJsonDocumentMatchesSchema(
-			$jsonResponse->ocs->data,
+			$jsonResponse,
 			$this->getJSONSchema($schemaString)
 		);
 	}
@@ -3129,6 +3148,14 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 *
+	 * @return string
+	 */
+	public static function getGroupUUIDv4Regex(): string {
+		return '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
+	}
+
+	/**
 	 * substitutes codes like %base_url% with the value
 	 * if the given value does not have anything to be substituted
 	 * then it is returned unmodified
@@ -3297,6 +3324,14 @@ class FeatureContext extends BehatVariablesContext {
 				"function" => [
 					$this,
 					"getLastPublicShareToken"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%group_id%",
+				"function" => [
+					$this,
+					"getGroupUUIDv4Regex"
 				],
 				"parameter" => []
 			]
