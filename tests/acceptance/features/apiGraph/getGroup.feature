@@ -130,5 +130,5 @@ Feature: get groups and their members
 
 
   Scenario: admin user tries to get group information of non-existing group
-    When user "Alice" gets details of a group "nonExistingGroup" using the Graph API
+    When user "Alice" gets details of non-existing group "nonExistingGroup" using the Graph API
     Then the HTTP status code should be "404"
