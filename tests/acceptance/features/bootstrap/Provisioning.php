@@ -651,10 +651,7 @@ trait Provisioning {
 	public function theLdapUsersHaveBeenReSynced():void {
 		// we need to sync ldap users when testing for parallel deployment
 		if (!OcisHelper::isTestingOnOcisOrReva() || OcisHelper::isTestingParallelDeployment()) {
-			$occResult = SetupHelper::runOcc(
-				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
-				$this->getStepLineRef()
-			);
+			$occResult = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 			if ($occResult['code'] !== "0") {
 				throw new Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
 			}
@@ -843,10 +840,7 @@ trait Provisioning {
 			[],
 			$substitutions
 		);
-		$occResult = SetupHelper::runOcc(
-			['ldap:set-config', $configId, $configKey, $configValue],
-			$this->getStepLineRef()
-		);
+		$occResult = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($occResult['code'] !== "0") {
 			throw new Exception(
 				__METHOD__ . " could not set LDAP setting " . $occResult['stdErr']
@@ -902,10 +896,7 @@ trait Provisioning {
 	public function resetOldLdapConfig():void {
 		$toDeleteLdapConfig = $this->getToDeleteLdapConfigs();
 		foreach ($toDeleteLdapConfig as $configId) {
-			SetupHelper::runOcc(
-				['ldap:delete-config', $configId],
-				$this->getStepLineRef()
-			);
+			['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		}
 		foreach ($this->oldLdapConfig as $configId => $settings) {
 			foreach ($settings as $configKey => $configValue) {

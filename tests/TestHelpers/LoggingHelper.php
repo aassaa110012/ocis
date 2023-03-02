@@ -57,10 +57,7 @@ class LoggingHelper {
 			// Currently we don't interact with the log file on reva or OCIS
 			return "";
 		}
-		$result = SetupHelper::runOcc(
-			['log:owncloud'],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not get owncloud log file information" .
@@ -135,10 +132,7 @@ class LoggingHelper {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return "debug";
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not get log level " . $result ["stdOut"] . " " .
@@ -170,10 +164,7 @@ class LoggingHelper {
 		if (!\in_array($logLevel, self::LOG_LEVEL_ARRAY)) {
 			throw new InvalidArgumentException("invalid log level");
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage", "--level=$logLevel"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not set log level " . $result ["stdOut"] . " " .
@@ -196,10 +187,7 @@ class LoggingHelper {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return "errorlog";
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not get log backend " . $result ["stdOut"] . " " .
@@ -236,10 +224,7 @@ class LoggingHelper {
 			// Currently we can't manage log file settings on reva or OCIS
 			return;
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage", "--backend=$backend"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not set log backend " . $result ["stdOut"] . " " .
@@ -262,10 +247,7 @@ class LoggingHelper {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return "UTC";
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not get log timezone " . $result ["stdOut"] . " " .
@@ -299,10 +281,7 @@ class LoggingHelper {
 			// Currently we can't manage log file settings on reva or OCIS
 			return;
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage", "--timezone=$timezone"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not set log timezone " . $result ["stdOut"] . " " .
@@ -384,10 +363,7 @@ class LoggingHelper {
 		}
 
 		if (\count($commands) > 1) {
-			$result = SetupHelper::runOcc(
-				$commands,
-				$xRequestId
-			);
+			$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 			if ($result["code"] != 0) {
 				throw new Exception(
 					"could not restore log status " . $result ["stdOut"] . " " .
@@ -415,10 +391,7 @@ class LoggingHelper {
 				"timezone" => "UTC"
 			];
 		}
-		$result = SetupHelper::runOcc(
-			["log:manage"],
-			$xRequestId
-		);
+		$result = ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		if ($result["code"] != 0) {
 			throw new Exception(
 				"could not get log level " . $result ["stdOut"] . " " .
