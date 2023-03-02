@@ -1693,6 +1693,7 @@ class GraphContext implements Context {
 	 * Get Group Id from response
 	 *
 	 * @param string $groupName - name of the group
+	 * @param array|null $allGroups
 	 *
 	 * @return string - id of the group
 	 * @throws Exception | GuzzleException
