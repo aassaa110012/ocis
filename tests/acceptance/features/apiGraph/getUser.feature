@@ -9,7 +9,7 @@ Feature: get users
       | username |
       | Alice    |
       | Brian    |
-    And the administrator has given "Alice" the role "Admin" using the settings api
+    And the administrator has assigned the role "Admin" to user "Alice" using the Graph API
 
 
   Scenario: admin user gets the information of a user
@@ -20,10 +20,26 @@ Feature: get users
       | Brian Murphy | %uuid_v4% | brian@example.org | Brian                    |
 
 
-  Scenario: non-admin user tries to get the information of a user
+  Scenario Outline: non-admin user tries to get the information of a user
+    Given the administrator has assigned the role "<role>" to user "Alice" using the Graph API
+    And the administrator has assigned the role "<userRole>" to user "Brian" using the Graph API
     When user "Brian" tries to get information of user "Alice" using Graph API
     Then the HTTP status code should be "401"
     And the last response should be an unauthorized response
+    Examples:
+      | userRole    | role        |
+      | Space Admin | Space Admin |
+      | Space Admin | User        |
+      | Space Admin | Guest       |
+      | Space Admin | Admin       |
+      | User        | Space Admin |
+      | User        | User        |
+      | User        | Guest       |
+      | User        | Admin       |
+      | Guest       | Space Admin |
+      | Guest       | User        |
+      | Guest       | Guest       |
+      | Guest       | Admin       |
 
 
   Scenario: admin user gets all users
@@ -35,10 +51,16 @@ Feature: get users
       | Brian Murphy | %uuid_v4% | brian@example.org | Brian                    |
 
 
-  Scenario: non-admin user tries to get all users
+  Scenario Outline: non-admin user tries to get all users
+    Given the administrator has given "Brian" the role "<userRole>" using the Graph API
     When user "Brian" tries to get all users using the Graph API
     Then the HTTP status code should be "401"
     And the last response should be an unauthorized response
+    Examples:
+      | userRole    |
+      | Space Admin |
+      | User        |
+      | Guest       |
 
 
   Scenario: admin user gets the drive information of a user
@@ -59,7 +81,8 @@ Feature: get users
       | webUrl            | %base_url%/f/%space_id%          |
 
 
-  Scenario: normal user gets his/her own drive information
+  Scenario Outline: non-admin user gets his/her own drive information
+    Given the administrator has given "Brian" the role "<userRole>" using the Graph API
     When the user "Brian" gets his drive information using Graph API
     Then the HTTP status code should be "200"
     And the user retrieve API response should contain the following information:
@@ -75,7 +98,11 @@ Feature: get users
       | root@@@id         | %space_id%                       |
       | root@@@webDavUrl  | %base_url%/dav/spaces/%space_id% |
       | webUrl            | %base_url%/f/%space_id%          |
-
+    Examples:
+      | userRole    |
+      | Space Admin |
+      | User        |
+      | Guest       |
 
   Scenario: admin user gets the group information of a user
     Given group "tea-lover" has been created
@@ -89,13 +116,29 @@ Feature: get users
       | Brian Murphy | %uuid_v4% | brian@example.org | Brian                    | tea-lover, coffee-lover |
 
 
-  Scenario: non-admin user tries to get the group information of a user
+  Scenario Outline: non-admin user tries to get the group information of a user
     Given user "Carol" has been created with default attributes and without skeleton files
+    And the administrator has given "Carol" the role "<userRole>" using the Graph API
+    And the administrator has given "Brian" the role "<role>" using the Graph API
     And group "coffee-lover" has been created
     And user "Brian" has been added to group "coffee-lover"
     When the user "Carol" gets user "Brian" along with his group information using Graph API
     Then the HTTP status code should be "401"
     And the last response should be an unauthorized response
+    Examples:
+      | userRole    | role        |
+      | Space Admin | Space Admin |
+      | Space Admin | User        |
+      | Space Admin | Guest       |
+      | Space Admin | Admin       |
+      | User        | Space Admin |
+      | User        | User        |
+      | User        | Guest       |
+      | User        | Admin       |
+      | Guest       | Space Admin |
+      | Guest       | User        |
+      | Guest       | Guest       |
+      | Guest       | Admin       |
 
 
   Scenario: admin user gets all users of certain groups
@@ -126,7 +169,7 @@ Feature: get users
 
 
   Scenario Outline: non admin user tries to get users of certain groups
-    Given the administrator has given "Brian" the role "<role>" using the settings api
+    Given the administrator has given "Brian" the role "<role>" using the Graph API
     And group "tea-lover" has been created
     And user "Alice" has been added to group "tea-lover"
     When the user "Brian" gets all users of the group "tea-lover" using the Graph API
@@ -141,8 +184,8 @@ Feature: get users
 
   Scenario: admin user gets all users with certain roles and members of a certain group
     Given user "Carol" has been created with default attributes and without skeleton files
-    And the administrator has given "Brian" the role "Space Admin" using the settings api
-    And the administrator has given "Carol" the role "Space Admin" using the settings api
+    And the administrator has given "Brian" the role "Space Admin" using the Graph API
+    And the administrator has given "Carol" the role "Space Admin" using the Graph API
     And group "tea-lover" has been created
     And user "Brian" has been added to group "tea-lover"
     When the user "Alice" gets all users with role "Space Admin" using the Graph API
@@ -165,12 +208,21 @@ Feature: get users
 
 
   Scenario Outline: non-admin user tries to get users with a certain role
-    Given the administrator has given "Brian" the role "<role>" using the settings api
-    When the user "Brian" gets all users with role "Admin" using the Graph API
+    Given the administrator has given "Brian" the role "<userRole>" using the Graph API
+    When the user "Brian" gets all users with role "<role>" using the Graph API
     Then the HTTP status code should be "401"
     And the last response should be an unauthorized response
     Examples:
-      | role        |
-      | Space Admin |
-      | User        |
-      | Guest       |
+      | userRole    | role        |
+      | Space Admin | Space Admin |
+      | Space Admin | User        |
+      | Space Admin | Guest       |
+      | Space Admin | Admin       |
+      | User        | Space Admin |
+      | User        | User        |
+      | User        | Guest       |
+      | User        | Admin       |
+      | Guest       | Space Admin |
+      | Guest       | User        |
+      | Guest       | Guest       |
+      | Guest       | Admin       |

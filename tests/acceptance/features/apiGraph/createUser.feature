@@ -10,7 +10,7 @@ Feature: create user
 
 
   Scenario Outline: the admin creates a user
-    Given the administrator has given "Alice" the role "Admin" using the settings api
+    Given the administrator has assigned the role "Admin" to user "Alice" using the Graph API
     When the user "Alice" creates a new user using GraphAPI with the following settings:
       | userName    | <userName>    |
       | displayName | <displayName> |
@@ -19,18 +19,18 @@ Feature: create user
     Then the HTTP status code should be "<code>"
     And user "<userName>" <shouldOrNot> exist
     Examples:
-      | userName                     | displayName      | email               | password                     | code | shouldOrNot |
-      | SameDisplayName              | Alice Hansen     | new@example.org     | containsCharacters(*:!;_+-&) | 200  | should     |
-      | withoutPassSameEmail         | without pass     | alice@example.org   |                              | 200  | should     |
-      | name                         | pass with space  | example@example.org | my pass                      | 200  | should     |
-      | nameWithCharacters(*:!;_+-&) | user             | new@example.org     | 123                          | 400  | should not |
-      | withoutEmail                 | without email    |                     | 123                          | 200  | should     |
-      | Alice                        | same userName    | new@example.org     | 123                          | 400  | should     |
-      | name with space              | name with space  | example@example.org | 123                          | 400  | should not |
+      | userName                     | displayName     | email               | password                     | code | shouldOrNot |
+      | SameDisplayName              | Alice Hansen    | new@example.org     | containsCharacters(*:!;_+-&) | 200  | should      |
+      | withoutPassSameEmail         | without pass    | alice@example.org   |                              | 200  | should      |
+      | name                         | pass with space | example@example.org | my pass                      | 200  | should      |
+      | nameWithCharacters(*:!;_+-&) | user            | new@example.org     | 123                          | 400  | should not  |
+      | withoutEmail                 | without email   |                     | 123                          | 200  | should      |
+      | Alice                        | same userName   | new@example.org     | 123                          | 400  | should      |
+      | name with space              | name with space | example@example.org | 123                          | 400  | should not  |
 
 
   Scenario: a user cannot be created with empty name
-    Given the administrator has given "Alice" the role "Admin" using the settings api
+    Given the administrator has assigned the role "Admin" to user "Alice" using the Graph API
     When the user "Alice" creates a new user using GraphAPI with the following settings:
       | userName    |              |
       | displayName | emptyName    |
@@ -40,7 +40,7 @@ Feature: create user
 
 
   Scenario Outline: a user without admin right cannot create a user
-    Given the administrator has given "Alice" the role "<role>" using the settings api
+    Given the administrator has assigned the role "<role>" to user "Alice" using the Graph API
     When the user "Alice" creates a new user using GraphAPI with the following settings:
       | userName    | user         |
       | displayName | user         |
@@ -52,3 +52,4 @@ Feature: create user
       | role        |
       | Space Admin |
       | User        |
+      | Guest       |
