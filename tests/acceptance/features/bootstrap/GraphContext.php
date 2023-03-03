@@ -1676,6 +1676,31 @@ class GraphContext implements Context {
 	 */
 	public function userGetsDetailsOfTheGroupUsingTheGraphApi(string $user, string $groupName): void {
 		$groupId = $this->getGroupIdByName($groupName);
+		$this->getDetailsOfGroup($user, $groupId);
+	}
+
+	/**
+	 * @When user :user gets details of non-existing group using the Graph API
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function userGetsDetailsOfNonExistingGroupUsingTheGraphApi(string $user): void {
+		// generates random group id for non-existing group
+		$groupId = WebDavHelper::generateUUIDv4();
+		$this->getDetailsOfGroup($user, $groupId);
+	}
+
+	/***
+	 * @param string $user
+	 * @param string $groupId
+	 *
+	 * @return void
+	 *
+	 * @throws GuzzleException
+	 */
+	public function getDetailsOfGroup(string $user, string $groupId): void {
 		$credentials = $this->getAdminOrUserCredentials($user);
 
 		$this->featureContext->setResponse(
@@ -1693,7 +1718,6 @@ class GraphContext implements Context {
 	 * Get Group Id from response
 	 *
 	 * @param string $groupName - name of the group
-	 * @param array|null $allGroups
 	 *
 	 * @return string - id of the group
 	 * @throws Exception | GuzzleException
