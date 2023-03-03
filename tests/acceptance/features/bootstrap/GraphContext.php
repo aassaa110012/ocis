@@ -1572,7 +1572,7 @@ class GraphContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 
 		$this->featureContext->setResponse(
-			GraphHelper::addUsersToGroup(
+			GraphHelper::addUsersOrGroupsToGroup(
 				$this->featureContext->getBaseUrl(),
 				$this->featureContext->getStepLineRef(),
 				$credentials["username"],
