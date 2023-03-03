@@ -1,6 +1,6 @@
-Enhancement: Introduce File-Firewall
+Enhancement: Introduce policies-service
 
-Introduces file-firewall service. The file-firewall service provides a new grpc api which can be used to find out whether a requested operation is allowed or not.
+Introduces policies service. The policies-service provides a new grpc api which can be used to return whether a requested operation is allowed or not.
 Open Policy Agent is used to determine the set of rules of what is permitted and what is not.
 
 2 further levels of authorization build on this:
