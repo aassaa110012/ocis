@@ -3151,7 +3151,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return string
 	 */
-	public static function getGroupUUIDv4Regex(): string {
+	public static function getUUIDv4Regex(): string {
 		return '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
 	}
 
@@ -3331,7 +3331,7 @@ class FeatureContext extends BehatVariablesContext {
 				"code" => "%group_id%",
 				"function" => [
 					$this,
-					"getGroupUUIDv4Regex"
+					"getUUIDv4Regex"
 				],
 				"parameter" => []
 			]
